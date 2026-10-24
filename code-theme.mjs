@@ -58,7 +58,8 @@ export const codeTheme = {
 	],
 };
 
-// ```console 블록: `$ curl ...`처럼 프롬프트가 있는 줄은 셸 문법으로 칠하고, 나머지 줄(출력)은 기본색으로 둡니다.
+// ```console 블록: `$ curl ...`, `> aws ...`, `user@host:~$ ls`처럼 프롬프트가 있는 줄은 셸 문법으로 칠하고,
+// `# ...`로 시작하는 줄은 주석, 나머지 줄(출력)은 기본색으로 둡니다.
 // 기본 제공 console 언어는 `$` 바로 뒤 명령어(curl 등)를 구분하지 못해서 직접 정의합니다.
 export const consoleLang = {
 	name: 'console',
@@ -66,8 +67,9 @@ export const consoleLang = {
 	scopeName: 'text.shell-session.blog',
 	embeddedLangs: ['shellscript'],
 	patterns: [
+		{ match: '^\\s*#(\\s.*)?$', name: 'comment.line.number-sign.shell-session' },
 		{
-			begin: '^(\\s*)([$#%>❯])(?=\\s)',
+			begin: '^(\\s*)((?:[\\w.-]+@[\\w.-]+:[^\\s$]*)?[$%>❯])(?=\\s)',
 			beginCaptures: { 2: { name: 'punctuation.separator.prompt.shell-session' } },
 			end: '$',
 			patterns: [{ include: 'source.shell#command_statement' }, { include: 'source.shell' }],
