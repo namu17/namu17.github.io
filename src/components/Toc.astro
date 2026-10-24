@@ -1,0 +1,96 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const items = Astro.props.headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+	items.length > 0 && (
+		<nav class="toc" aria-label="목차">
+			<span class="toc__title">CONTENTS</span>
+			{items.map((h) => (
+				<a href={`#${h.slug}`} class:list={['toc__link', { 'toc__link--sub': h.depth === 3 }]} data-toc-link={h.slug}>
+					{h.text}
+				</a>
+			))}
+		</nav>
+	)
+}
+
+<style>
+	.toc {
+		position: sticky;
+		top: 96px;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		max-height: calc(100vh - 120px);
+		overflow-y: auto;
+		font-size: 14px;
+	}
+
+	.toc__title {
+		margin-bottom: 8px;
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		color: var(--muted);
+	}
+
+	.toc__link {
+		padding: 6px 12px;
+		border-left: 2px solid var(--border);
+		color: var(--soft);
+		line-height: 1.5;
+	}
+
+	.toc__link--sub {
+		padding-left: 24px;
+		font-size: 13px;
+	}
+
+	.toc__link.is-active {
+		border-left-color: var(--accent);
+		color: var(--accent);
+		font-weight: 600;
+	}
+</style>
+
+<script>
+	// 지금 읽고 있는 섹션을 목차에서 강조합니다.
+	const links = new Map<string, HTMLElement>();
+	document.querySelectorAll<HTMLElement>('[data-toc-link]').forEach((a) => links.set(a.dataset.tocLink!, a));
+
+	if (links.size) {
+		const headings = [...links.keys()].map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+		const setActive = (id: string) => links.forEach((a, key) => a.classList.toggle('is-active', key === id));
+
+		const update = () => {
+			let current = headings[0]?.id;
+			for (const h of headings) {
+				if (h.getBoundingClientRect().top <= 120) current = h.id;
+				else break;
+			}
+			if (current) setActive(current);
+		};
+
+		let ticking = false;
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(() => {
+					update();
+					ticking = false;
+				});
+			},
+			{ passive: true },
+		);
+		update();
+	}
+</script>

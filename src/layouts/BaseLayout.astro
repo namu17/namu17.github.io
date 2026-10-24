@@ -1,0 +1,112 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseHead from '../components/BaseHead.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Topbar, { type Crumb } from '../components/Topbar.astro';
+import { AUTHOR } from '../consts';
+
+interface Props {
+	title: string;
+	description: string;
+	path: Crumb[];
+	image?: ImageMetadata;
+	/** 본문 최대 폭. 글 상세처럼 목차가 붙는 페이지는 넓게 씁니다. */
+	wide?: boolean;
+}
+
+const { title, description, path, image, wide = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<BaseHead title={title} description={description} image={image} />
+	</head>
+	<body>
+		<a class="skip-link" href="#content">본문으로 건너뛰기</a>
+		<div class="shell">
+			<Sidebar />
+			<button type="button" class="scrim" data-drawer-close tabindex="-1" aria-hidden="true"></button>
+			<div class="column">
+				<Topbar path={path} />
+				<main id="content" class:list={['main', { 'main--wide': wide }]}>
+					<slot />
+				</main>
+				<footer class="footer">© {new Date().getFullYear()} {AUTHOR.name} · Built with Astro</footer>
+			</div>
+		</div>
+	</body>
+</html>
+
+<style>
+	.shell {
+		display: flex;
+		min-height: 100vh;
+	}
+
+	.column {
+		flex: 1 1 auto;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.main {
+		flex: 1 0 auto;
+		width: 100%;
+		max-width: 880px;
+		padding: 40px;
+	}
+
+	.main--wide {
+		max-width: 1120px;
+	}
+
+	:global(html[data-sidebar='collapsed']) .main--wide {
+		max-width: 1320px;
+	}
+
+	.footer {
+		padding: 24px 40px 32px;
+		color: var(--muted);
+		font-size: 13px;
+	}
+
+	.scrim {
+		display: none;
+	}
+
+	.skip-link {
+		position: absolute;
+		left: 8px;
+		top: -48px;
+		z-index: 100;
+		padding: 10px 14px;
+		border-radius: 8px;
+		background: var(--heading);
+		color: #fff;
+	}
+
+	.skip-link:focus {
+		top: 8px;
+	}
+
+	@media (max-width: 960px) {
+		.main {
+			padding: 28px 16px;
+		}
+
+		.footer {
+			padding: 24px 16px 32px;
+		}
+
+		:global(html[data-drawer='open']) .scrim {
+			display: block;
+			position: fixed;
+			inset: 0;
+			z-index: 40;
+			border: 0;
+			background: rgb(18 21 26 / 0.35);
+		}
+	}
+</style>

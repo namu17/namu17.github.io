@@ -1,0 +1,107 @@
+---
+import { CATEGORY_LABEL } from '../../consts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { countBy, getPosts, tagSlug } from '../../lib/posts';
+
+const posts = await getPosts();
+const categories = (Object.keys(CATEGORY_LABEL) as (keyof typeof CATEGORY_LABEL)[]).map((key) => {
+	const inCat = posts.filter((p) => p.data.category === key);
+	return { key, label: CATEGORY_LABEL[key], count: inCat.length, topics: countBy(inCat.map((p) => p.data.topic)) };
+});
+---
+
+<BaseLayout title="Categories" description="카테고리별 글 모음" path={[{ label: 'categories' }]}>
+	<h1 class="page-title">Categories</h1>
+	<p class="page-desc">분야별로 글을 모아봤습니다.</p>
+	<div class="grid">
+		{
+			categories.map((c) => (
+				<section class="box">
+					<a href={`/categories/${c.key}/`} class="box__head">
+						<span class={`box__name cat-${c.key}`}>{c.label}/</span>
+						<span class="box__count">{c.count}</span>
+					</a>
+					{c.topics.length ? (
+						<ul class="tree">
+							{c.topics.map((t, i) => (
+								<li>
+									<span class="tree__branch" aria-hidden="true">
+										{i === c.topics.length - 1 ? '└─' : '├─'}
+									</span>
+									<a href={`/categories/${c.key}/${tagSlug(t.key)}/`}>{t.key}/</a>
+									<span class="tree__count">{t.count}</span>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p class="box__empty">아직 글이 없습니다.</p>
+					)}
+				</section>
+			))
+		}
+	</div>
+</BaseLayout>
+
+<style>
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 16px;
+	}
+
+	.box {
+		padding: 22px 24px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--surface);
+	}
+
+	.box__head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 12px;
+	}
+
+	.box__name {
+		font-family: var(--font-mono);
+		font-size: 20px;
+		font-weight: 700;
+	}
+
+	.box__count,
+	.tree__count {
+		font-family: var(--font-mono);
+		font-size: 13px;
+		color: var(--muted);
+	}
+
+	.tree {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-family: var(--font-mono);
+		font-size: 14px;
+	}
+
+	.tree li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-height: 36px;
+	}
+
+	.tree__branch {
+		color: var(--border-strong);
+	}
+
+	.tree__count {
+		margin-left: auto;
+	}
+
+	.box__empty {
+		margin: 0;
+		color: var(--muted);
+		font-size: 14px;
+	}
+</style>

@@ -1,0 +1,97 @@
+---
+import { CATEGORY_LABEL } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate, getPosts, type Post, postUrl } from '../lib/posts';
+
+const posts = await getPosts();
+const byYear = new Map<number, Post[]>();
+for (const post of posts) {
+	const y = post.data.pubDate.getFullYear();
+	if (!byYear.has(y)) byYear.set(y, []);
+	byYear.get(y)!.push(post);
+}
+---
+
+<BaseLayout title="Archives" description="전체 글 목록" path={[{ label: 'archives' }]}>
+	<h1 class="page-title">Archives</h1>
+	<p class="page-desc">전체 {posts.length}개의 글</p>
+	{posts.length === 0 && <p class="empty">아직 글이 없습니다.</p>}
+	{
+		[...byYear.entries()].map(([year, list]) => (
+			<section class="year">
+				<h2 class="year__title">{year}</h2>
+				<ul class="rows">
+					{list.map((post) => (
+						<li>
+							<a href={postUrl(post)} class="row">
+								<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate).slice(5)}</time>
+								<span class={`row__cat cat-${post.data.category}`}>
+									{CATEGORY_LABEL[post.data.category]}/{post.data.topic}
+								</span>
+								<span class="row__title">{post.data.title}</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</BaseLayout>
+
+<style>
+	.year + .year {
+		margin-top: 32px;
+	}
+
+	.year__title {
+		margin: 0 0 8px;
+		font-family: var(--font-mono);
+		font-size: 18px;
+		color: var(--heading);
+	}
+
+	.rows {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-top: 1px solid var(--border);
+	}
+
+	.row {
+		display: grid;
+		grid-template-columns: 56px 120px minmax(0, 1fr);
+		gap: 16px;
+		align-items: baseline;
+		padding: 14px 4px;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.row time,
+	.row__cat {
+		font-family: var(--font-mono);
+		font-size: 13px;
+		color: var(--muted);
+	}
+
+	.row__cat {
+		font-weight: 500;
+	}
+
+	.row__title {
+		color: var(--heading);
+	}
+
+	.row:hover .row__title {
+		color: var(--accent);
+	}
+
+	@media (max-width: 600px) {
+		.row {
+			grid-template-columns: 56px minmax(0, 1fr);
+		}
+
+		.row__cat {
+			display: none;
+		}
+	}
+</style>

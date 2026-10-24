@@ -1,0 +1,82 @@
+---
+import { CATEGORY_LABEL } from '../consts';
+import { formatDate, type Post, postUrl } from '../lib/posts';
+
+interface Props {
+	post: Post;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, category, topic, tags, draft } = post.data;
+---
+
+<a href={postUrl(post)} class="card">
+	<span class="card__title">
+		{draft && <span class="draft">DRAFT</span>}
+		{title}
+	</span>
+	<span class="card__desc">{description}</span>
+	<span class="card__meta">
+		<time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+		<span class={`cat-${category}`}>{CATEGORY_LABEL[category]} · {topic}</span>
+		{tags.length > 0 && <span>{tags.map((t) => `#${t}`).join(' ')}</span>}
+	</span>
+</a>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 22px 24px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--surface);
+		color: inherit;
+		transition: border-color 0.15s ease;
+	}
+
+	.card:hover {
+		color: inherit;
+		border-color: var(--border-strong);
+	}
+
+	.card:hover .card__title {
+		color: var(--accent);
+	}
+
+	.card__title {
+		font-size: 19px;
+		font-weight: 600;
+		line-height: 1.45;
+		color: var(--heading);
+	}
+
+	.card__desc {
+		font-size: 14px;
+		line-height: 1.7;
+		color: var(--soft);
+	}
+
+	.card__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 14px;
+		font-size: 13px;
+		color: var(--muted);
+	}
+
+	.card__meta [class^='cat-'] {
+		font-weight: 600;
+	}
+
+	.draft {
+		margin-right: 8px;
+		padding: 2px 8px;
+		border-radius: 6px;
+		background: #fef3c7;
+		color: #92400e;
+		font-size: 12px;
+		vertical-align: middle;
+	}
+</style>

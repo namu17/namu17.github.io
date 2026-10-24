@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Search" description="글 검색" path={[{ label: 'search' }]}>
+	<h1 class="page-title">Search</h1>
+	<p class="page-desc" data-search-status>검색어를 입력하세요.</p>
+	<ul class="results" data-search-results></ul>
+</BaseLayout>
+
+<style>
+	.results {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.results :global(a) {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 18px 22px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--surface);
+	}
+
+	.results :global(strong) {
+		font-size: 17px;
+		color: var(--heading);
+	}
+
+	.results :global(span) {
+		font-size: 14px;
+		line-height: 1.7;
+		color: var(--soft);
+	}
+
+	.results :global(mark) {
+		background: #fef08a;
+		color: inherit;
+	}
+</style>
+
+<script>
+	// 검색은 배포 빌드 때 만들어지는 Pagefind 색인을 사용합니다.
+	// npm run dev에서는 색인이 없어서 동작하지 않고, npm run build && npm run preview로 확인할 수 있습니다.
+	const status = document.querySelector<HTMLElement>('[data-search-status]')!;
+	const list = document.querySelector<HTMLElement>('[data-search-results]')!;
+	const q = new URLSearchParams(location.search).get('q')?.trim() ?? '';
+	const input = document.querySelector<HTMLInputElement>('input[name="q"]');
+	if (input) input.value = q;
+
+	const escape = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+	async function run() {
+		if (!q) return;
+		status.textContent = `"${q}" 검색 중...`;
+		try {
+			const pagefindUrl = '/pagefind/pagefind.js';
+			const pagefind = await import(/* @vite-ignore */ pagefindUrl);
+			const search = await pagefind.search(q);
+			const results = await Promise.all(search.results.slice(0, 20).map((r: { data: () => Promise<any> }) => r.data()));
+			status.textContent = `"${q}" 검색 결과 ${search.results.length}개`;
+			list.innerHTML = results
+				.map((r) => `<li><a href="${escape(r.url)}"><strong>${escape(r.meta?.title ?? r.url)}</strong><span>${r.excerpt}</span></a></li>`)
+				.join('');
+		} catch (e) {
+			status.textContent = '검색 색인을 불러오지 못했습니다. 배포된 사이트나 npm run build 후 preview에서 사용할 수 있습니다.';
+		}
+	}
+
+	run();
+</script>

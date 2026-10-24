@@ -1,0 +1,74 @@
+---
+import PostCard from '../../../components/PostCard.astro';
+import { CATEGORY_LABEL } from '../../../consts';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { countBy, getPosts, type Post, tagSlug } from '../../../lib/posts';
+
+type Cat = keyof typeof CATEGORY_LABEL;
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return (Object.keys(CATEGORY_LABEL) as Cat[]).map((category) => ({
+		params: { category },
+		props: { category, posts: posts.filter((p) => p.data.category === category) },
+	}));
+}
+
+interface Props {
+	category: Cat;
+	posts: Post[];
+}
+
+const { category, posts } = Astro.props;
+const topics = countBy(posts.map((p) => p.data.topic));
+---
+
+<BaseLayout title={CATEGORY_LABEL[category]} description={`${CATEGORY_LABEL[category]} 글 모음`} path={[{ label: 'categories', href: '/categories/' }, { label: category }]}>
+	<h1 class="page-title">{CATEGORY_LABEL[category]}</h1>
+	{
+		topics.length > 0 && (
+			<div class="chips">
+				{topics.map((t) => (
+					<a href={`/categories/${category}/${tagSlug(t.key)}/`} class="chip">
+						{t.key} <span>{t.count}</span>
+					</a>
+				))}
+			</div>
+		)
+	}
+	<div class="list">
+		{posts.length ? posts.map((post) => <PostCard post={post} />) : <p class="empty">아직 글이 없습니다.</p>}
+	</div>
+</BaseLayout>
+
+<style>
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 8px 0 24px;
+	}
+
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		min-height: 36px;
+		padding: 0 14px;
+		border: 1px solid var(--border-strong);
+		border-radius: 18px;
+		background: var(--surface);
+		font-family: var(--font-mono);
+		font-size: 13px;
+	}
+
+	.chip span {
+		color: var(--muted);
+	}
+
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+</style>

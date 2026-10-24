@@ -1,0 +1,355 @@
+---
+import { AUTHOR, NAV, SOCIAL } from '../consts';
+import Icon from './Icon.astro';
+
+const current = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? current === '/' || current.startsWith('/posts/') : current.startsWith(href));
+
+const socials = [
+	{ key: 'github', label: 'GitHub', href: SOCIAL.github, icon: 'github' },
+	{ key: 'linkedin', label: 'LinkedIn', href: SOCIAL.linkedin, icon: 'linkedin' },
+	{ key: 'email', label: 'Email', href: SOCIAL.email ? `mailto:${SOCIAL.email}` : '', icon: 'mail' },
+].filter((s) => s.href);
+
+const initial = AUTHOR.name.charAt(0).toUpperCase();
+---
+
+<aside class="sidebar" id="sidebar" aria-label="사이드바">
+	<div class="sidebar__top">
+		<button type="button" class="icon-btn sidebar__toggle" data-sidebar-toggle aria-controls="sidebar" aria-expanded="true">
+			<span class="when-expanded"><Icon name="panel-close" size={20} /></span>
+			<span class="when-collapsed"><Icon name="panel-open" size={20} /></span>
+			<span class="sr-only" data-toggle-label>사이드바 접기</span>
+		</button>
+		<button type="button" class="icon-btn sidebar__close" data-drawer-close>
+			<Icon name="close" size={20} />
+			<span class="sr-only">메뉴 닫기</span>
+		</button>
+	</div>
+
+	<a href="/" class="profile">
+		{
+			AUTHOR.avatar ? (
+				<img class="profile__avatar" src={AUTHOR.avatar} alt="" width="104" height="104" />
+			) : (
+				<span class="profile__avatar profile__avatar--empty" aria-hidden="true">
+					{initial}
+				</span>
+			)
+		}
+		<span class="profile__name">{AUTHOR.name}</span>
+		<span class="profile__bio">
+			{AUTHOR.role}
+			<br />
+			{AUTHOR.bio}
+		</span>
+	</a>
+
+	<nav class="nav" aria-label="주 메뉴">
+		{
+			NAV.map((item) => (
+				<a href={item.href} class:list={['nav__link', { 'is-active': isActive(item.href) }]} title={item.label} aria-current={isActive(item.href) ? 'page' : undefined}>
+					<Icon name={item.icon} size={20} />
+					<span class="nav__label">{item.label}</span>
+				</a>
+			))
+		}
+	</nav>
+
+	<div class="socials">
+		{
+			socials.map((s) => (
+				<a href={s.href} class="social" title={s.label} aria-label={s.label} target={s.key === 'email' ? undefined : '_blank'} rel="noopener noreferrer">
+					<Icon name={s.icon} size={20} />
+				</a>
+			))
+		}
+		<a href="/rss.xml" class="social" title="RSS" aria-label="RSS">
+			<Icon name="rss" size={20} />
+		</a>
+	</div>
+</aside>
+
+<style>
+	.sidebar {
+		position: sticky;
+		top: 0;
+		flex: none;
+		width: var(--sidebar-w);
+		height: 100vh;
+		height: 100dvh;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
+		padding: 16px 20px 24px;
+		background: var(--surface);
+		border-right: 1px solid var(--border);
+		transition: width 0.2s ease;
+	}
+
+	.sidebar__top {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.icon-btn {
+		width: 44px;
+		height: 44px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		color: var(--soft);
+		cursor: pointer;
+	}
+
+	.icon-btn:hover {
+		color: var(--accent);
+		border-color: var(--border-strong);
+	}
+
+	.sidebar__close {
+		display: none;
+	}
+
+	.when-expanded,
+	.when-collapsed {
+		display: flex;
+	}
+
+	.when-collapsed {
+		display: none;
+	}
+
+	.nav__link :global(svg),
+	.social :global(svg) {
+		flex: none;
+	}
+
+	.profile {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+		text-align: center;
+		color: inherit;
+	}
+
+	.profile__avatar {
+		width: 104px;
+		height: 104px;
+		border-radius: 50%;
+		object-fit: cover;
+		background: #e9edf5;
+	}
+
+	.profile__avatar--empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 36px;
+		font-weight: 700;
+		color: var(--soft);
+	}
+
+	.profile__name {
+		font-size: 22px;
+		font-weight: 700;
+		color: var(--heading);
+	}
+
+	.profile__bio {
+		font-size: 14px;
+		line-height: 1.6;
+		color: var(--muted);
+	}
+
+	.nav {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.nav__link {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-height: 44px;
+		padding: 0 16px;
+		border-radius: 8px;
+		color: var(--soft);
+		font-size: 14px;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+	}
+
+	.nav__link:hover {
+		background: var(--bg);
+	}
+
+	.nav__link.is-active {
+		background: var(--accent-bg);
+		color: var(--accent);
+	}
+
+	.socials {
+		margin-top: auto;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.social {
+		width: 44px;
+		height: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid var(--border-strong);
+		border-radius: 50%;
+		color: var(--soft);
+	}
+
+	/* ----- 접힌 상태 (데스크톱) ----- */
+	:global(html[data-sidebar='collapsed']) .sidebar {
+		width: var(--sidebar-w-collapsed);
+		padding: 16px 0 24px;
+		align-items: center;
+		gap: 20px;
+	}
+
+	:global(html[data-sidebar='collapsed']) .when-expanded {
+		display: none;
+	}
+
+	:global(html[data-sidebar='collapsed']) .when-collapsed {
+		display: flex;
+	}
+
+	:global(html[data-sidebar='collapsed']) .profile__avatar {
+		width: 40px;
+		height: 40px;
+		font-size: 15px;
+	}
+
+	:global(html[data-sidebar='collapsed']) .profile__name,
+	:global(html[data-sidebar='collapsed']) .profile__bio,
+	:global(html[data-sidebar='collapsed']) .nav__label {
+		display: none;
+	}
+
+	:global(html[data-sidebar='collapsed']) .nav__link {
+		width: 44px;
+		padding: 0;
+		justify-content: center;
+	}
+
+	:global(html[data-sidebar='collapsed']) .socials {
+		flex-direction: column;
+	}
+
+	:global(html[data-sidebar='collapsed']) .social {
+		border-color: transparent;
+	}
+
+	/* ----- 좁은 화면: 서랍 메뉴 ----- */
+	@media (max-width: 960px) {
+		.sidebar,
+		:global(html[data-sidebar='collapsed']) .sidebar {
+			position: fixed;
+			z-index: 50;
+			left: 0;
+			width: min(300px, 85vw);
+			padding: 16px 20px 24px;
+			align-items: stretch;
+			gap: 28px;
+			transform: translateX(-100%);
+			transition: transform 0.2s ease;
+			box-shadow: none;
+		}
+
+		:global(html[data-drawer='open']) .sidebar {
+			transform: none;
+			box-shadow: 0 0 40px rgb(0 0 0 / 0.15);
+		}
+
+		.sidebar__toggle {
+			display: none;
+		}
+
+		.sidebar__close {
+			display: inline-flex;
+		}
+
+		:global(html[data-sidebar='collapsed']) .profile__avatar {
+			width: 104px;
+			height: 104px;
+			font-size: 36px;
+		}
+
+		:global(html[data-sidebar='collapsed']) .profile__name,
+		:global(html[data-sidebar='collapsed']) .profile__bio,
+		:global(html[data-sidebar='collapsed']) .nav__label {
+			display: revert;
+		}
+
+		:global(html[data-sidebar='collapsed']) .nav__link {
+			width: auto;
+			padding: 0 16px;
+			justify-content: flex-start;
+		}
+
+		:global(html[data-sidebar='collapsed']) .socials {
+			flex-direction: row;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.sidebar {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	const root = document.documentElement;
+	const toggle = document.querySelector<HTMLButtonElement>('[data-sidebar-toggle]');
+	const label = document.querySelector<HTMLElement>('[data-toggle-label]');
+
+	function sync() {
+		const collapsed = root.dataset.sidebar === 'collapsed';
+		toggle?.setAttribute('aria-expanded', String(!collapsed));
+		if (label) label.textContent = collapsed ? '사이드바 펼치기' : '사이드바 접기';
+		toggle?.setAttribute('title', collapsed ? '사이드바 펼치기' : '사이드바 접기');
+	}
+
+	toggle?.addEventListener('click', () => {
+		const collapsed = root.dataset.sidebar === 'collapsed';
+		if (collapsed) delete root.dataset.sidebar;
+		else root.dataset.sidebar = 'collapsed';
+		try {
+			localStorage.setItem('sidebar', collapsed ? 'expanded' : 'collapsed');
+		} catch (e) {}
+		sync();
+	});
+
+	sync();
+
+	// 좁은 화면 서랍 메뉴
+	const openers = document.querySelectorAll('[data-drawer-open]');
+	const closers = document.querySelectorAll('[data-drawer-close]');
+	const setDrawer = (open: boolean) => {
+		if (open) root.dataset.drawer = 'open';
+		else delete root.dataset.drawer;
+		openers.forEach((b) => b.setAttribute('aria-expanded', String(open)));
+	};
+	openers.forEach((b) => b.addEventListener('click', () => setDrawer(true)));
+	closers.forEach((b) => b.addEventListener('click', () => setDrawer(false)));
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && root.dataset.drawer === 'open') setDrawer(false);
+	});
+</script>

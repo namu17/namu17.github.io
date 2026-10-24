@@ -1,0 +1,156 @@
+---
+import Icon from './Icon.astro';
+
+export interface Crumb {
+	label: string;
+	href?: string;
+}
+
+interface Props {
+	path: Crumb[];
+}
+
+const { path } = Astro.props;
+---
+
+<header class="topbar">
+	<button type="button" class="menu-btn" data-drawer-open aria-controls="sidebar" aria-expanded="false">
+		<Icon name="menu" size={20} />
+		<span class="sr-only">메뉴 열기</span>
+	</button>
+
+	<nav class="crumbs" aria-label="현재 위치">
+		<Icon name="folder" size={16} />
+		{
+			path.length === 0 ? (
+				<span class="crumbs__current" aria-current="page">
+					home
+				</span>
+			) : (
+				<a href="/">home</a>
+			)
+		}
+		{
+			path.map((c, i) => (
+				<>
+					<span aria-hidden="true">/</span>
+					{c.href && i < path.length - 1 ? (
+						<a href={c.href}>{c.label}</a>
+					) : (
+						<span class="crumbs__current" aria-current="page">
+							{c.label}
+						</span>
+					)}
+				</>
+			))
+		}
+	</nav>
+
+	<form class="search" action="/search/" method="get" role="search">
+		<label>
+			<Icon name="search" size={16} />
+			<span class="sr-only">검색</span>
+			<input type="search" name="q" placeholder="검색" autocomplete="off" />
+		</label>
+	</form>
+</header>
+
+<style>
+	.topbar {
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px 16px;
+		padding: 14px 40px;
+		background: color-mix(in srgb, var(--surface) 92%, transparent);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.menu-btn {
+		display: none;
+		width: 44px;
+		height: 44px;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		color: var(--soft);
+		cursor: pointer;
+	}
+
+	.crumbs {
+		flex: 1 1 auto;
+		min-width: 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 8px;
+		font-family: var(--font-mono);
+		font-size: 14px;
+		color: var(--muted);
+	}
+
+	.crumbs a {
+		color: var(--muted);
+	}
+
+	.crumbs a:hover {
+		color: var(--accent);
+	}
+
+	.crumbs__current {
+		color: var(--accent);
+		font-weight: 500;
+		overflow-wrap: anywhere;
+	}
+
+	.search label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		height: 44px;
+		padding: 0 16px;
+		border: 1px solid var(--border-strong);
+		border-radius: 22px;
+		background: var(--bg);
+		color: var(--muted);
+	}
+
+	.search label:focus-within {
+		border-color: var(--accent);
+	}
+
+	.search input {
+		width: 200px;
+		background: none;
+		border: none;
+		outline: none;
+		color: var(--text);
+		font: inherit;
+		font-size: 14px;
+	}
+
+	@media (max-width: 960px) {
+		.topbar {
+			padding: 12px 16px;
+		}
+
+		.menu-btn {
+			display: inline-flex;
+		}
+
+		.search {
+			flex: 1 1 100%;
+		}
+
+		.search input {
+			width: 100%;
+		}
+	}
+</style>

@@ -1,0 +1,54 @@
+---
+import PostCard from '../../../components/PostCard.astro';
+import { CATEGORY_LABEL } from '../../../consts';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPosts, type Post, tagSlug } from '../../../lib/posts';
+
+type Cat = keyof typeof CATEGORY_LABEL;
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	const seen = new Map<string, { category: Cat; topic: string; posts: Post[] }>();
+	for (const post of posts) {
+		const key = `${post.data.category}/${tagSlug(post.data.topic)}`;
+		if (!seen.has(key)) seen.set(key, { category: post.data.category, topic: post.data.topic, posts: [] });
+		seen.get(key)!.posts.push(post);
+	}
+	return [...seen.values()].map((v) => ({
+		params: { category: v.category, topic: tagSlug(v.topic) },
+		props: v,
+	}));
+}
+
+interface Props {
+	category: Cat;
+	topic: string;
+	posts: Post[];
+}
+
+const { category, topic, posts } = Astro.props;
+---
+
+<BaseLayout
+	title={`${CATEGORY_LABEL[category]} · ${topic}`}
+	description={`${CATEGORY_LABEL[category]} ${topic} 글 모음`}
+	path={[
+		{ label: 'categories', href: '/categories/' },
+		{ label: category, href: `/categories/${category}/` },
+		{ label: topic },
+	]}
+>
+	<h1 class="page-title">{CATEGORY_LABEL[category]} · {topic}</h1>
+	<p class="page-desc">{posts.length}개의 글</p>
+	<div class="list">
+		{posts.map((post) => <PostCard post={post} />)}
+	</div>
+</BaseLayout>
+
+<style>
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+</style>

@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { countBy, getPosts, tagSlug } from '../../lib/posts';
+
+const posts = await getPosts();
+const tags = countBy(posts.flatMap((p) => p.data.tags));
+---
+
+<BaseLayout title="Tags" description="태그 모음" path={[{ label: 'tags' }]}>
+	<h1 class="page-title">Tags</h1>
+	<p class="page-desc">{tags.length}개의 태그</p>
+	{
+		tags.length ? (
+			<div class="tags">
+				{tags.map((t) => (
+					<a href={`/tags/${tagSlug(t.key)}/`} class="tag">
+						#{t.key}
+						<span>{t.count}</span>
+					</a>
+				))}
+			</div>
+		) : (
+			<p class="empty">아직 태그가 없습니다.</p>
+		)
+	}
+</BaseLayout>
+
+<style>
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		min-height: 40px;
+		padding: 0 16px;
+		border: 1px solid var(--border-strong);
+		border-radius: 20px;
+		background: var(--surface);
+		font-size: 14px;
+	}
+
+	.tag span {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		color: var(--muted);
+	}
+</style>

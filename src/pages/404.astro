@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404" description="페이지를 찾을 수 없습니다" path={[{ label: '404' }]}>
+	<div class="nf">
+		<pre class="nf__term"><span class="nf__prompt">$</span> cat {Astro.url.pathname}
+cat: No such file or directory</pre>
+		<p>찾으시는 페이지가 없거나 주소가 바뀌었습니다.</p>
+		<a href="/" class="nf__home">← 홈으로 돌아가기</a>
+	</div>
+</BaseLayout>
+
+<style>
+	.nf {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding-top: 24px;
+	}
+
+	.nf__term {
+		margin: 0;
+		padding: 18px 20px;
+		border-radius: var(--radius);
+		background: #111827;
+		color: #e5e7eb;
+		font-family: var(--font-mono);
+		font-size: 14px;
+		line-height: 1.75;
+		white-space: pre-wrap;
+	}
+
+	.nf__prompt {
+		color: #34d399;
+	}
+
+	.nf p {
+		margin: 0;
+		color: var(--soft);
+	}
+
+	.nf__home {
+		color: var(--accent);
+		font-weight: 600;
+	}
+</style>
