@@ -14,9 +14,9 @@ interface Props {
 }
 
 const { post, headings, prev, next } = Astro.props;
-const { title, description, pubDate, updatedDate, category, topic, tags, ctf, heroImage } = post.data;
+const { title, description, pubDate, updatedDate, category, topic, tags, heroImage } = post.data;
 
-// 상단 경로: home / ctf / pwn / baby-heap.md
+// 상단 경로: home / web / xss / baby-xss.md
 const fileName = `${post.id.split('/').pop()}.md`;
 const path = [
 	{ label: category, href: `/categories/${category}/` },
@@ -33,22 +33,6 @@ const path = [
 					<a href={`/categories/${category}/`} class={`cat-${category}`}>
 						{CATEGORY_LABEL[category]} · {topic}
 					</a>
-					{
-						ctf && (
-							<>
-								<span aria-hidden="true">·</span>
-								<span>{ctf.event}</span>
-							</>
-						)
-					}
-					{
-						ctf?.difficulty && (
-							<>
-								<span aria-hidden="true">·</span>
-								<span>{ctf.difficulty}</span>
-							</>
-						)
-					}
 				</div>
 				<h1 class="post__title">{title}</h1>
 				<div class="post__meta" data-pagefind-ignore>

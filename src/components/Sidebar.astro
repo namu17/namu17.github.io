@@ -37,12 +37,11 @@ const initial = AUTHOR.name.charAt(0).toUpperCase();
 				</span>
 			)
 		}
-		<span class="profile__name">{AUTHOR.name}</span>
-		<span class="profile__bio">
-			{AUTHOR.role}
-			<br />
-			{AUTHOR.bio}
+		<span class="profile__heading">
+			<span class="profile__name">{AUTHOR.name}</span>
+			<span class="profile__role">{AUTHOR.role}</span>
 		</span>
+		<span class="profile__bio">{AUTHOR.bio}</span>
 	</a>
 
 	<nav class="nav" aria-label="주 메뉴">
@@ -155,13 +154,26 @@ const initial = AUTHOR.name.charAt(0).toUpperCase();
 		color: var(--soft);
 	}
 
+	.profile__heading {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
 	.profile__name {
 		font-size: 22px;
 		font-weight: 700;
 		color: var(--heading);
 	}
 
+	.profile__role {
+		font-size: 14px;
+		font-weight: 500;
+		color: var(--soft);
+	}
+
 	.profile__bio {
+		margin-top: 8px;
 		font-size: 14px;
 		line-height: 1.6;
 		color: var(--muted);
@@ -237,6 +249,7 @@ const initial = AUTHOR.name.charAt(0).toUpperCase();
 	}
 
 	:global(html[data-sidebar='collapsed']) .profile__name,
+	:global(html[data-sidebar='collapsed']) .profile__role,
 	:global(html[data-sidebar='collapsed']) .profile__bio,
 	:global(html[data-sidebar='collapsed']) .nav__label {
 		display: none;
@@ -292,6 +305,7 @@ const initial = AUTHOR.name.charAt(0).toUpperCase();
 		}
 
 		:global(html[data-sidebar='collapsed']) .profile__name,
+		:global(html[data-sidebar='collapsed']) .profile__role,
 		:global(html[data-sidebar='collapsed']) .profile__bio,
 		:global(html[data-sidebar='collapsed']) .nav__label {
 			display: revert;

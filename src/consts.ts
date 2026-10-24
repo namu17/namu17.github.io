@@ -1,21 +1,21 @@
 // 사이트 전체에서 쓰는 정보입니다. 여기만 고치면 사이드바, 메타 태그, RSS에 모두 반영됩니다.
 
-export const SITE_TITLE = 'namu17';
-export const SITE_DESCRIPTION = '클라우드 보안과 CTF 풀이를 기록하는 블로그';
+export const SITE_TITLE = 'Namu17\'s Blog';
+export const SITE_DESCRIPTION = '공부 기록 블로그';
 
 export const AUTHOR = {
-	name: 'namu17',
+	name: 'Namu17',
 	// 사이드바 프로필 아래 두 줄
-	role: 'Cloud Security · CTF',
-	bio: '[한 줄 소개를 적어주세요]',
+	role: 'Computer Engineering Student',
+	bio: '웹 & 클라우드 보안 공부하고 있습니다.',
 	// public/ 폴더에 이미지를 넣고 경로를 적으면 아바타로 쓰입니다. (예: '/avatar.png')
-	avatar: '',
+	avatar: '/profile.webp',
 };
 
 // 비워두면 해당 버튼이 숨겨집니다.
 export const SOCIAL = {
 	github: 'https://github.com/namu17',
-	linkedin: '',
+	linkedin: 'https://www.linkedin.com/in/namu17/',
 	email: 'rlxo247677@gmail.com',
 };
 
@@ -28,6 +28,7 @@ export const NAV = [
 ] as const;
 
 export const CATEGORY_LABEL = {
-	cloud: 'Cloud',
-	ctf: 'CTF',
+	cloud: 'cloud',
+	web: 'web',
+	network: 'network',
 } as const;

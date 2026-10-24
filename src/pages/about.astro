@@ -6,15 +6,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="About" description={`${AUTHOR.name} 소개`} path={[{ label: 'about.md' }]}>
 	<h1 class="page-title">About</h1>
 	<div class="prose">
-		<p>[자기소개를 적어주세요. 이 파일은 src/pages/about.astro 입니다.]</p>
+		<p>국립부경대학교 컴퓨터공학전공 재학 중이며,<br>웹과 클라우드 보안 공부하고 있습니다.</p>
+		<h2>학력</h2>
+		<ul>
+			<li>국립부경대학교 컴퓨터공학전공 학사 과정 : 22.03 ~ 28.02 (예정)</li>
+		</ul>
 		<h2>관심 분야</h2>
 		<ul>
-			<li>Cloud Security: [예: AWS, Kubernetes]</li>
-			<li>CTF: [예: pwn, web]</li>
+			<li>Cloud Security : AWS, Kubernetes</li>
+			<li>Web Security</li>
 		</ul>
 		<h2>활동</h2>
 		<ul>
-			<li>[참가한 CTF, 자격증, 프로젝트 등]</li>
+			<li class="entry">
+				<span>교내 정보보안 동아리 CERT-IS :</span>
+				<span class="periods">
+					<span> 25.09 ~</span>
+					<span> 26.03 ~ 26.08 (임원진)</span>
+					<span> 26.09 ~ 27.02 (부회장)</span>
+				</span>
+			</li>
+			<li>KISA 화이트햇스쿨 4기 : 26.06.08 ~ 26.12.10</li>
 		</ul>
 	</div>
 </BaseLayout>
+
+<style>
+	/* 기간이 여러 줄일 때 첫 줄 위치에 맞춰 세로로 정렬 */
+	.entry > span {
+		vertical-align: top;
+	}
+
+	.periods {
+		display: inline-flex;
+		flex-direction: column;
+		margin-left: 0.3em;
+	}
+</style>

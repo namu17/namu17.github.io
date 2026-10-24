@@ -1,3 +1,32 @@
+/* ===== 본문 글꼴: 나눔스퀘어라운드 (네이버 한글 웹폰트) ===== */
+@font-face {
+	font-family: 'NanumSquareRound';
+	font-weight: 300;
+	font-display: swap;
+	src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundL.woff2) format('woff2'), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundL.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'NanumSquareRound';
+	font-weight: 400;
+	font-display: swap;
+	src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundR.woff2) format('woff2'), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundR.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'NanumSquareRound';
+	font-weight: 700;
+	font-display: swap;
+	src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundB.woff2) format('woff2'), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundB.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'NanumSquareRound';
+	font-weight: 800;
+	font-display: swap;
+	src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundEB.woff2) format('woff2'), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareRound/NanumSquareRoundEB.woff) format('woff');
+}
+
 /* ===== 디자인 토큰: 색, 폰트를 바꾸려면 여기만 고치면 됩니다 ===== */
 :root {
 	--bg: #f6f7f9;
@@ -12,13 +41,14 @@
 
 	--accent: #1f4fd1;
 	--accent-bg: #eef2fb;
-	--cat-ctf: #b45309;
 	--cat-cloud: var(--accent);
+	--cat-web: #b45309;
+	--cat-network: #047857;
 
 	--code-inline-bg: #eceff4;
 	--code-inline-fg: #b42318;
 
-	--font-sans: 'IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+	--font-sans: 'NanumSquareRound', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
 	--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
 	--sidebar-w: 280px;
@@ -34,7 +64,9 @@
 
 html {
 	-webkit-text-size-adjust: 100%;
-	scroll-padding-top: 80px;
+	scroll-padding-top: 64px;
+	/* 글이 짧아 스크롤바가 없는 페이지에서도 폭이 같도록 자리를 비워둠 */
+	scrollbar-gutter: stable;
 }
 
 body {
@@ -99,12 +131,16 @@ img {
 	text-align: center;
 }
 
-.cat-ctf {
-	color: var(--cat-ctf);
-}
-
 .cat-cloud {
 	color: var(--cat-cloud);
+}
+
+.cat-web {
+	color: var(--cat-web);
+}
+
+.cat-network {
+	color: var(--cat-network);
 }
 
 .tag-chip {

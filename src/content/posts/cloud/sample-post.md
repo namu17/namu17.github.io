@@ -28,7 +28,7 @@ IAM 정책 같은 JSON도 하이라이트됩니다.
 
 ## 명령어 예시
 
-```bash frame="terminal"
+```console
 $ aws sts get-caller-identity
 ```
 
