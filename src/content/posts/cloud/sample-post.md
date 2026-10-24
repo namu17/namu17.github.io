@@ -5,6 +5,7 @@ pubDate: 2026-10-20
 category: cloud
 topic: aws
 tags: [example, iam]
+draft: true
 ---
 
 `src/content/posts/cloud/` 폴더에 글을 쓰면 Cloud 카테고리로 분류됩니다.

@@ -5,6 +5,7 @@ pubDate: 2026-10-24
 category: web
 topic: xss
 tags: [example, xss]
+draft: true
 ---
 
 이 글은 디자인 확인용 예시입니다. `src/content/posts/web/` 폴더에 Markdown 파일을 만들면 이렇게 표시됩니다.
