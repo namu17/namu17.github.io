@@ -16,7 +16,7 @@ export const AUTHOR = {
 export const SOCIAL = {
 	github: 'https://github.com/namu17',
 	linkedin: '',
-	email: '',
+	email: 'rlxo247677@gmail.com',
 };
 
 export const NAV = [
