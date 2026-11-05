@@ -44,6 +44,7 @@
 	--cat-cloud: var(--accent);
 	--cat-web: #b45309;
 	--cat-network: #047857;
+	--cat-ctf: #7e22ce;
 
 	--code-inline-bg: #eceff4;
 	--code-inline-fg: #b42318;
@@ -65,8 +66,6 @@
 html {
 	-webkit-text-size-adjust: 100%;
 	scroll-padding-top: 64px;
-	/* 글이 짧아 스크롤바가 없는 페이지에서도 폭이 같도록 자리를 비워둠 */
-	scrollbar-gutter: stable;
 }
 
 body {
@@ -141,6 +140,10 @@ img {
 
 .cat-network {
 	color: var(--cat-network);
+}
+
+.cat-ctf {
+	color: var(--cat-ctf);
 }
 
 .tag-chip {

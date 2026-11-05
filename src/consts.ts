@@ -31,4 +31,5 @@ export const CATEGORY_LABEL = {
 	cloud: 'cloud',
 	web: 'web',
 	network: 'network',
+	ctf: 'ctf',
 } as const;

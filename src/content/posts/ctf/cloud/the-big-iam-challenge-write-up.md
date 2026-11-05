@@ -2,8 +2,8 @@
 title: 'The Big IAM Challenge Write-Up'
 description: 'Wiz의 The Big IAM Challenge 6문제를 S3, SQS, SNS, Cognito, STS 권한 설정의 허점을 따라가며 풀어본 기록입니다.'
 pubDate: 2026-08-21
-category: cloud
-topic: ctf
+category: ctf
+topic: cloud
 tags: [iam, ctf, aws]
 ---
 
@@ -13,7 +13,7 @@ tags: [iam, ctf, aws]
 
 문제에서 제공되는 View IAM Policy를 보면 s3에 대하여 s3:GetObject과 s3:ListBucket 권한이 부여된 것을 확인할 수 있습니다.
 
-![View IAM Policy](./the-big-iam-challenge-write-up/01.png)
+![View IAM Policy|500](./the-big-iam-challenge-write-up/01.png)
 
 그 중에서 s3:ListBucket은 files/*에 대해서만 권한이 허용되었습니다. 따라서 문제 내에서 가능한 동작은 s3 내 Object 목록과 다운로드가 있습니다.
 
@@ -125,7 +125,7 @@ Completed 37 Bytes/37 Bytes (794 Bytes/s) with 1 file(s) remainingdownload: s3:/
 > We created our own analytics system specifically for this challenge. We think it's so good that we even used it on this page. What could go wrong?  
 > Join our queue and get the secret flag.
 
-![View IAM Policy](./the-big-iam-challenge-write-up/02.png)
+![View IAM Policy|500](./the-big-iam-challenge-write-up/02.png)
 
 이번 문제에서는 sqs:SendMessage와 sqs:ReceiveMessage 권한이 허용되었습니다.
 
@@ -167,7 +167,7 @@ Completed 37 Bytes/37 Bytes (794 Bytes/s) with 1 file(s) remainingdownload: s3:/
 
 > We got a message for you. Can you get it?
 
-![View IAM Policy](./the-big-iam-challenge-write-up/03.png)
+![View IAM Policy|500](./the-big-iam-challenge-write-up/03.png)
 
 이번 문제에서는 SNS:Subscribe 권한이 허용되었습니다.
 
@@ -219,7 +219,7 @@ Endpoint가 @tbic.wiz.io이면 되니깐 Dreamhack Tools 중 Request Bin을 활�
 > We learned from our mistakes from the past.  
 > Now our bucket only allows access to one specific admin user. Or does it?
 
-![View IAM Policy](./the-big-iam-challenge-write-up/09.png)
+![View IAM Policy|500](./the-big-iam-challenge-write-up/09.png)
 
 문제 1번과 동일한 권한에서 s3:ListBucket에 대하여 aws:PrincipalArn-"tag-key"의 user-name이 admin인 경우에만 허용됩니다.
 
@@ -253,7 +253,7 @@ Endpoint가 @tbic.wiz.io이면 되니깐 Dreamhack Tools 중 Request Bin을 활�
 > **User Pool**: 사용자 인증 및 권한 관리  
 > **Identity Pool**: AWS 리소스에 액세스하는 데 사용할 수 있는 임시 AWS 자격 증명 제공
 
-![View IAM Policy](./the-big-iam-challenge-write-up/11.png)
+![View IAM Policy|500](./the-big-iam-challenge-write-up/11.png)
 
 이 문제에서는 mobileanalytics:PutEvents와 cognito-sync:* 권한이 부여되었습니다.
 
@@ -302,7 +302,7 @@ aws configure
 > Anonymous access no more. Let's see what can you do now.  
 > Now try it with the authenticated role: arn:aws:iam::092297851374:role/Cognito_s3accessAuth_Role
 
-![View IAM Policy](./the-big-iam-challenge-write-up/13.png)
+![View IAM Policy|500](./the-big-iam-challenge-write-up/13.png)
 
 sts:AssumeRoleWithWebIdentity 권한을 통해서 해당 명령어를 사용할 수 있었고, 형식은 다음과 같습니다.
 
@@ -367,4 +367,4 @@ namu17@DESKTOP:~$ aws s3 cp s3://wiz-privatefiles-x1000/flag2.txt -
 
 ## 수료증
 
-![수료증](./the-big-iam-challenge-write-up/14.png)
+![수료증|400](./the-big-iam-challenge-write-up/14.png)

@@ -6,11 +6,16 @@ import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import expressiveCode from 'astro-expressive-code';
 import shellscript from '@shikijs/langs/shellscript';
 import { consoleLang } from './code-theme.mjs';
+import imageSize from './image-size-plugin.mjs';
+import { satteri } from '@astrojs/markdown-satteri';
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://namu17.github.io',
+	markdown: {
+		processor: satteri({ hastPlugins: [imageSize] }),
+	},
 	integrations: [
 		// expressiveCode는 mdx보다 앞에 있어야 MDX 안의 코드 블록에도 적용됩니다.
 		expressiveCode({
