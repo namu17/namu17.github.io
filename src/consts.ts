@@ -7,7 +7,7 @@ export const AUTHOR = {
 	name: 'Namu17',
 	// 사이드바 프로필 아래 두 줄
 	role: 'Computer Engineering Student',
-	bio: '웹 & 클라우드 보안 공부하고 있습니다.',
+	bio: '클라우드 보안 공부하고 있습니다.',
 	// public/ 폴더에 이미지를 넣고 경로를 적으면 아바타로 쓰입니다. (예: '/avatar.png')
 	avatar: '/profile.webp',
 };
@@ -31,5 +31,5 @@ export const CATEGORY_LABEL = {
 	cloud: 'cloud',
 	web: 'web',
 	network: 'network',
-	ctf: 'ctf',
+	project: 'project',
 } as const;

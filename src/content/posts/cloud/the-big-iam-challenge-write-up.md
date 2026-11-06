@@ -2,8 +2,8 @@
 title: 'The Big IAM Challenge Write-Up'
 description: 'Wiz의 The Big IAM Challenge 6문제를 S3, SQS, SNS, Cognito, STS 권한 설정의 허점을 따라가며 풀어본 기록입니다.'
 pubDate: 2026-08-21
-category: ctf
-topic: cloud
+category: cloud
+topic: aws
 tags: [iam, ctf, aws]
 ---
 

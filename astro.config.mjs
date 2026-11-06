@@ -13,6 +13,10 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://namu17.github.io',
+	// 글 위치를 옮겼을 때 예전 주소로 들어와도 새 주소로 이동시킵니다.
+	redirects: {
+		'/posts/ctf/cloud/the-big-iam-challenge-write-up': '/posts/cloud/the-big-iam-challenge-write-up',
+	},
 	markdown: {
 		processor: satteri({ hastPlugins: [imageSize] }),
 	},

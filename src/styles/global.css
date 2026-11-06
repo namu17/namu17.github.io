@@ -44,7 +44,7 @@
 	--cat-cloud: var(--accent);
 	--cat-web: #b45309;
 	--cat-network: #047857;
-	--cat-ctf: #7e22ce;
+	--cat-project: #7e22ce;
 
 	--code-inline-bg: #eceff4;
 	--code-inline-fg: #b42318;
@@ -142,8 +142,8 @@ img {
 	color: var(--cat-network);
 }
 
-.cat-ctf {
-	color: var(--cat-ctf);
+.cat-project {
+	color: var(--cat-project);
 }
 
 .tag-chip {
