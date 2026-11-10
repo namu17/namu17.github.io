@@ -43,7 +43,7 @@
 	--accent-bg: #eef2fb;
 	--cat-cloud: var(--accent);
 	--cat-web: #b45309;
-	--cat-network: #047857;
+	--cat-container: #047857;
 	--cat-project: #7e22ce;
 
 	--code-inline-bg: #eceff4;
@@ -138,8 +138,8 @@ img {
 	color: var(--cat-web);
 }
 
-.cat-network {
-	color: var(--cat-network);
+.cat-container {
+	color: var(--cat-container);
 }
 
 .cat-project {
