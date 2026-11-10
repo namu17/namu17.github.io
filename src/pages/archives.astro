@@ -59,7 +59,7 @@ for (const post of posts) {
 
 	.row {
 		display: grid;
-		grid-template-columns: 56px 120px minmax(0, 1fr);
+		grid-template-columns: 56px 144px minmax(0, 1fr);
 		gap: 16px;
 		align-items: baseline;
 		padding: 14px 4px;
@@ -75,6 +75,9 @@ for (const post of posts) {
 
 	.row__cat {
 		font-weight: 500;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.row__title {
