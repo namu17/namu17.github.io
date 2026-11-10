@@ -2,7 +2,7 @@
 title: '[Docker] Docker 개념 정리'
 description: '컨테이너와 VM의 차이, Docker의 클라이언트-서버 아키텍처와 주요 오브젝트(이미지, 컨테이너)를 정리했습니다.'
 pubDate: 2026-11-10
-category: cloud
+category: container
 topic: docker
 tags: [docker, container]
 ---

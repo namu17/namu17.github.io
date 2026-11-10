@@ -13,8 +13,9 @@ const posts = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			// 큰 분류: consts.ts의 CATEGORY_LABEL 키와 같아야 합니다.
-			category: z.enum(['cloud', 'web', 'network', 'project']),
-			// 세부 분야: aws, k8s 등 / project는 cloud, web 등
+			category: z.enum(['cloud', 'web', 'container', 'project']),
+			// 세부 분야: cloud는 aws 등, container는 docker/k8s, project는 cloud/web 등
+			// (EKS: AWS 설정 중심이면 cloud/aws, K8s 리소스 중심이면 container/k8s)
 			topic: z.string(),
 			tags: z.array(z.string()).default([]),
 			// CTF 글일 때만 (tags에 ctf도 함께 넣기)

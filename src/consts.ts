@@ -30,6 +30,6 @@ export const NAV = [
 export const CATEGORY_LABEL = {
 	cloud: 'cloud',
 	web: 'web',
-	network: 'network',
+	container: 'container',
 	project: 'project',
 } as const;
