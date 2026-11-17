@@ -35,6 +35,7 @@ docker builder prune [OPTIONS]
 # --filter: 조건 지정
 # --reserved-space: 지정한 만큼의 캐시만 남기고 삭제 (EX. 10GB)
 ```
+---
 ## 2) 이미지 관련 명령어
 ---
 ### 2-1) 이미지 목록 확인
@@ -120,6 +121,7 @@ docker tag myapp:1.0 ghcr.io/owner/myapp:1.0 # GitHub 레지스트리
 docker push [OPTIONS] NAME[:TAG]
 # -a, --all-tags: 저장소의 모든 태그 올리기
 ```
+---
 ## 3) 컨테이너 관련 명령어
 ---
 ### 3-1) 컨테이너 목록 확인
@@ -250,6 +252,7 @@ docker attach [OPTIONS] CONTAINER
 # exit, Ctrl C -> 컨테이너 멈춤
 # Ctrl P, Ctrl Q (O)
 ```
+---
 ## 4) 네트워크 관련 명령어
 ---
 ### 4-1) 네트워크 목록 확인
@@ -321,6 +324,7 @@ docker network connect [OPTIONS] NETWORK CONTAINER
 docker network disconnect [OPTIONS] NETWORK CONTAINER
 # -f, --force: 강제 분리
 ```
+---
 ## 5) 볼륨
 ---
 ### 5-1) 볼륨 목록 확인
@@ -353,6 +357,7 @@ docker volume prune [OPTIONS]
 docker volume inspect [OPTIONS] VOLUME [VOLUME...]
 # -f, --format: 출력 형식 지정
 ```
+---
 ## 6) 기타
 ---
 ### 6-1) 파일 복사
