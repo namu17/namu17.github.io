@@ -7,12 +7,28 @@ topic: docker
 tags: [docker, container, dockerfile]
 ---
 
-## 1) Dockerfile이란?
+## 0) Dockerfile이란?
 ---
 Dockerfile은 이미지를 만들기 위한 명령어를 담은 텍스트 파일로, Docker에서 해당 파일을 읽고 자동으로 이미지를 빌드할 수 있습니다. 
-### 1-1) 장점
+### 0-1) 장점
 - 누구나 Dockerfile을 통해서 쉽게 이미지 빌드가 가능합니다. (재현성)
 - 명령어마다 레이어가 생기고 캐시되어, 바뀐 부분만 다시 빌드합니다.
+---
+## 1) Docker 빌드/실행 명령어
+---
+```bash
+docker build [OPTIONS] PATH | URL | -
+# [OPTIONS]
+# -t, --tag : 이미지 이름과 태그 지정
+# -f, --file : Dockerfile 경로 지정 (기본값: PATH/Dockerfile)
+# --no-cache : 캐시 없이 처음부터 빌드
+# --bild-arg KEY=VAL : Dockerfile의 ARG에 값 전달
+# --platform : 빌드할 아키텍처 지정 (EX. linux/amd64)
+# --pull : 베이스 이미지를 항상 새로 받기
+# --progress=plain : 빌드 로그를 전부 출력
+# --label : 이미지에 라벨 붙이기
+# --q, --quiet : 빌드 로그 생략, 이미지 ID만 출력
+```
 ---
 ## 2) Dockerfile 명령어
 ---
@@ -70,7 +86,7 @@ RUN [OPTIONS] <command> ...
 RUN [OPTIONS] ["<command>", ...]
 # EX. RUN ["apt-get", "install", "-y", "curl"] / CMD ["node", "app.js"]
 
-# OPTIONS
+# [OPTIONS]
 # --mount=type=cache: 패키지 다운로드 캐시를 빌드 간에 재사용
 # --mount=type=secret: 비밀번호, 토큰을 이미지에 남기지 않고 사용
 # --mount=type=bind: 컨텍스트나 다른 스테이지 파일을 복사 없이 잠깐 사용 (기본값)
